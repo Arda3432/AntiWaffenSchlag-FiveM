@@ -1,23 +1,19 @@
-local function isPlayerValid(ped)
-    return ped and ped ~= -1 and not IsEntityDead(ped) and not IsPedInAnyVehicle(ped, false)
-end
-
-local function keepPlayerAlive(ped)
-    local currentHealth = GetEntityHealth(ped)
-
-    if currentHealth > 100 and currentHealth < 140 then
-        SetEntityHealth(ped, 145)
-    end
-end
-
 CreateThread(function()
     while true do
-        Wait(200) 
+        Wait(0)
 
-        local player = PlayerPedId()
-
-        if isPlayerValid(player) then
-            keepPlayerAlive(player)
+        local playerPed = PlayerPedId()
+        if IsPedArmed(playerPed, 6) then
+            DisableControlAction(0, 140, true)
+            DisableControlAction(0, 141, true)
+            DisableControlAction(0, 142, true)
         end
     end
 end)
+
+local function ShowNotification(message)
+    BeginTextCommandThefeedPost("STRING")
+    AddTextComponentSubstringPlayerName(message)
+    EndTextCommandThefeedPostTicker(false, false)
+end
+
